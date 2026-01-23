@@ -10,6 +10,6 @@ The goal of this document is to assist team members in setup of various services
 
 3. Reach out to Adriean for the link to join the tailnet.
 
-4. Access Nextcloud by navigating to apps.liger-gondola.ts.net:8080.
+4. Access Nextcloud by navigating to http://apps.liger-gondola.ts.net:8080.
 
 5. Login with provided Nextcloud credentials.
