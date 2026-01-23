@@ -8,7 +8,7 @@ The goal of this document is to assist team members in setup of various services
 
 2. Sign in or create an account. You may authenticate your account with your school email (Google) if desired.
 
-3. Join the tailnet: https://login.tailscale.com/uinv/i4ud1BKuye11tcCV2ALkq11.
+3. Reach out to Adriean for the link to join the tailnet.
 
 4. Access Nextcloud by navigating to apps.liger-gondola.ts.net:8080.
 
