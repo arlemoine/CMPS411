@@ -1,2 +1,7 @@
-# CMPS411
-CMPS 411 - Capstone
+# CMPS411 - Capstone
+
+## Playbooks
+
+[Workflow Setup](docs/playbook_workflow.md)
+
+
