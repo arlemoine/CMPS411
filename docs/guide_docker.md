@@ -1,5 +1,7 @@
 # Working with Docker
 
+> **NOTE**: This document may be ignored for now, as this workflow may not even be entirely useful for this particular project. It is only staged here in the event that it is useful in the future.
+
 This document outlines how our team will use Docker for development, including starting and stopping services, using the VS Code plugin, and reporting new dependency needs.
 
 
