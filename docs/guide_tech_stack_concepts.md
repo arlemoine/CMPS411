@@ -127,7 +127,7 @@ It is also flexible. **MCP tools** can be integrated alongside **RAG** for combi
 ### Key concepts
 
 - Cluster
-	- Logical group of machines taht run your containers.
+	- Logical group of machines that run your containers.
 	- You don't manage the servers directly if you use **Fargate**.
 - Task
 	- One running instance of a container or set of containers defined in a task definition.  
