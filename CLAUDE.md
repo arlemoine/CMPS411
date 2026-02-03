@@ -153,11 +153,13 @@ The project follows a phased approach (see `docs/playbook_milestones.md` for det
 
 ## Team Roles
 
-- **Infra**: Environment design and maintenance (Adriean - primary)
-- **RAG**: Document ingestion and retrieval tuning
-- **MCP**: Database tool implementation
-- **Integration**: Component coordination (Adriean - secondary)
-- **Documentation**: Technical docs and guides
+- **Infra**: Environment design and maintenance (Adriean Lemoine)
+- **Frontend**: React + TypeScript chat UI development (Paul)
+- **Orchestrator**: LLM routing and Bedrock API integration (Adam)
+- **MCP**: Database tool implementation and MCP server (Sebastian)
+- **RAG**: Document ingestion and retrieval tuning (Hunter)
+- **Integration**: Component coordination (Adriean - secondary role)
+- **Documentation**: Technical docs and guides (shared by all)
 
 ## File Naming Convention
 
