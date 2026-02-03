@@ -159,6 +159,17 @@ The project follows a phased approach (see `docs/playbook_milestones.md` for det
 - **Integration**: Component coordination (Adriean - secondary)
 - **Documentation**: Technical docs and guides
 
+## File Naming Convention
+
+- **Standard files**: Use lowercase_separated_by_underscores (snake_case) for all files
+- **Exceptions**: README.md and CLAUDE.md use UPPERCASE
+- **Examples**:
+  - ✅ `workflow_chat_ui.md`
+  - ✅ `guide_tech_stack_concepts.md`
+  - ✅ `claude_code_cheatsheet.md`
+  - ❌ `WorkflowChatUI.md`
+  - ❌ `TECH_STACK_GUIDE.md`
+
 ## Version Control Guidelines
 
 - **Temporary Files**: Never commit files to the repo that start with `temp_` in their file name. These are working files only and should remain local.
@@ -195,6 +206,9 @@ Each tool:
 - Provides a safety boundary between AI and database
 
 ## Key Documentation
+
+**Quick Reference:**
+- `docs/claude_code_cheatsheet.md`: How to interact with Claude Code efficiently
 
 **Technical Guides:**
 - `docs/guides/guide_tech_stack_concepts.md`: AWS Bedrock, RAG, vector embeddings, MCP, ECS/Fargate

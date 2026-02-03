@@ -1,0 +1,66 @@
+version: "3.9"
+
+services:
+  mcp-server:
+    build:
+      context: ../../mcp-server
+      dockerfile: Dockerfile
+    volumes:
+      - ../../mcp-server:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://dev:devpass@database:5432/healthcare
+    networks:
+      - capstone
+    depends_on:
+      - database
+
+  llm-orchestrator:
+    build:
+      context: ../../llm-orchestrator
+      dockerfile: Dockerfile
+    volumes:
+      - ../../llm-orchestrator:/app
+    ports:
+      - "8080:8080"
+    environment:
+      - MCP_SERVER_URL=http://mcp-server:8000
+      - AWS_REGION=us-east-1
+      # Add Bedrock credentials via .env file
+    networks:
+      - capstone
+    depends_on:
+      - mcp-server
+
+  chat-ui:
+    image: nginx:alpine
+    volumes:
+      - ../../chat-ui:/usr/share/nginx/html
+    ports:
+      - "3000:80"
+    networks:
+      - capstone
+    depends_on:
+      - llm-orchestrator
+
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: healthcare
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: devpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - capstone
+
+networks:
+  capstone:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
