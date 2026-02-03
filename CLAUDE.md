@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Special Instructions
+
+**"Add context" Command**: When any team member uses the phrase "Add context" followed by information, automatically add that information to this CLAUDE.md file in the appropriate section (or create a new section if needed). This allows quick updates to project context without explicit file editing requests.
+
 ## Project Overview
 
 This is a capstone project building an AI-powered healthcare information system that combines:
@@ -119,6 +123,19 @@ The project follows a phased approach (see `docs/playbook_milestones.md` for det
 - **MCP**: Database tool implementation
 - **Integration**: Component coordination (Adriean - secondary)
 - **Documentation**: Technical docs and guides
+
+## Project Epics
+
+The project is organized into 6 Jira epics that represent parallel workstreams:
+
+1. **Frontend Chat Interface** - User interface for querying documents and live data
+2. **AWS Infrastructure and Deployment** - ECS/Fargate, networking, IAM, deployment pipeline
+3. **LLM Orchestrator** - Logic to route queries between RAG and MCP, interact with Bedrock
+4. **MCP Server and Database Setup** - Python MCP server with database query tools, Milvus setup
+5. **DSS Team / External Dependencies** - Coordination with external teams and systems
+6. **RAG / Knowledge Base Setup** - S3, Bedrock Knowledge Base, document ingestion, embeddings
+
+These epics complement the linear development phases outlined above by showing how work is organized across the team.
 
 ## MCP Tools (Planned)
 
