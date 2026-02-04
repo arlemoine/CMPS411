@@ -17,5 +17,5 @@ COPY . .
 EXPOSE 8000
 
 # Default command to run the app (can be overridden in docker-compose)
-CMD ["python", "main.py"]
+CMD ["python", "-u", "main.py"]
 

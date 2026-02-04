@@ -1,5 +1,8 @@
 version: "3.9"
 
+# Environment variables loaded from .env file
+# Copy .env.example to .env and fill in actual values
+
 services:
   mcp-server:
     build:
@@ -9,6 +12,8 @@ services:
       - ../../mcp-server:/app
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     environment:
       - DATABASE_URL=postgresql://dev:devpass@database:5432/healthcare
     networks:
@@ -24,21 +29,31 @@ services:
       - ../../llm-orchestrator:/app
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       - MCP_SERVER_URL=http://mcp-server:8000
-      - AWS_REGION=us-east-1
-      # Add Bedrock credentials via .env file
     networks:
       - capstone
     depends_on:
       - mcp-server
 
   chat-ui:
-    image: nginx:alpine
+    build:
+      context: ../../chat-ui
+      dockerfile: Dockerfile
     volumes:
-      - ../../chat-ui:/usr/share/nginx/html
+      # Mount source code for hot-reloading
+      - ../../chat-ui:/app
+      # Use named volume for node_modules to prevent overwriting
+      - chat_ui_node_modules:/app/node_modules
     ports:
-      - "3000:80"
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      # API URL for connecting to orchestrator (from browser)
+      - VITE_API_BASE_URL=http://localhost:8080
     networks:
       - capstone
     depends_on:
@@ -63,4 +78,5 @@ networks:
 
 volumes:
   postgres_data:
+  chat_ui_node_modules:
 

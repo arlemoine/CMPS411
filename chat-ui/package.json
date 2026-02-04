@@ -1,0 +1,11 @@
+{
+  "name": "healthcare-chat-ui",
+  "version": "0.1.0",
+  "description": "Healthcare AI Chat Interface - PLACEHOLDER for FRONTEND-02",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Waiting for Paul to initialize React project (FRONTEND-02)' && sleep infinity"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
