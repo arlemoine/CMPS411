@@ -1,183 +1,234 @@
 # Docker Development Environment
 
-This directory contains the Docker Compose configuration for local development of the Healthcare AI Capstone project.
+This directory contains the Docker setup for running all project services locally. Docker lets you run the entire project (frontend, backend, database) with a single command, without installing Python, Node, or PostgreSQL on your machine.
 
-## Quick Start
+## First Time Setup
 
-### 1. Set up environment variables
+### Prerequisites
 
+1. **Install Docker Desktop**: Download from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/)
+2. **Start Docker Desktop**: Make sure it's running (you'll see a whale icon in your taskbar/menu bar)
+
+### Initial Configuration
+
+1. **Navigate to this directory**:
+   ```bash
+   cd infra/docker
+   ```
+
+2. **Copy the environment file**:
+   ```bash
+   cp .env.example .env
+   ```
+
+   The `.env` file contains configuration like AWS credentials. Adriean will provide these values after INFRA-03.
+
+3. **Start everything**:
+
+   **Option A: Using Command Line**
+   ```bash
+   docker compose up -d
+   ```
+
+   **Option B: Using Docker Desktop GUI**
+   - Open Docker Desktop
+   - Go to the "Containers" tab
+   - Click the "▶ Play" button if containers are stopped
+
+   This will download images and start all 4 services. First time takes ~2-5 minutes.
+
+4. **Verify it's working**:
+   - Chat UI: Open http://localhost:3000 in your browser
+   - You should see a message saying "Waiting for Paul to initialize React project"
+   - If you see this, everything is working!
+
+## Daily Development Workflow
+
+### Starting Your Work Session
+
+**Command Line:**
 ```bash
-# Copy the example environment file
-cp .env.example .env
-
-# Edit .env and fill in your actual values
-# (AWS credentials will be provided by Adriean after INFRA-03)
-```
-
-### 2. Start all services
-
-```bash
-# From the infra/docker/ directory
-docker compose up -d
-
-# View logs
-docker compose logs -f
-
-# View logs for specific service
-docker compose logs -f chat-ui
-```
-
-### 3. Access the services
-
-- **Chat UI**: http://localhost:3000
-- **LLM Orchestrator**: http://localhost:8080
-- **MCP Server**: http://localhost:8000
-- **PostgreSQL Database**: localhost:5432
-
-## Services
-
-### chat-ui (Port 3000)
-- React + TypeScript frontend
-- Hot-reloading enabled (changes reflect immediately)
-- Connects to orchestrator at http://localhost:8080
-
-### llm-orchestrator (Port 8080)
-- Python FastAPI service
-- Routes queries between RAG and MCP
-- Connects to AWS Bedrock
-
-### mcp-server (Port 8000)
-- Python MCP server
-- Provides database query tools
-- Connects to PostgreSQL database
-
-### database (Port 5432)
-- PostgreSQL 15
-- Contains patient data
-- Data persists in `postgres_data` volume
-
-## Common Commands
-
-### Start services
-```bash
+cd infra/docker
 docker compose up -d
 ```
 
-### Stop services
-```bash
-docker compose down
-```
+**Docker Desktop GUI:**
+- Open Docker Desktop
+- Find "infra-docker" or your containers
+- Click the "▶ Play" button
 
-### Rebuild after code changes
-```bash
-# Rebuild specific service
-docker compose up -d --build chat-ui
+### While Working
 
-# Rebuild all services
-docker compose up -d --build
-```
+Just edit files in your code editor (VS Code, etc.). Changes are automatically reflected:
+- **Frontend (chat-ui)**: Changes appear immediately in your browser
+- **Backend (Python files)**: Changes are synced, but may need container restart for some changes
 
-### View logs
+### Viewing Logs (See What's Happening)
+
+**Command Line:**
 ```bash
-# All services
+# See logs from all services
 docker compose logs -f
 
-# Specific service
+# See logs from just one service
 docker compose logs -f mcp-server
 ```
 
-### Access service shell
+**Docker Desktop GUI:**
+- Click on any container name
+- View the "Logs" tab
+
+### Stopping Your Work Session
+
+**Command Line:**
 ```bash
-# Chat UI (Node)
-docker compose exec chat-ui sh
-
-# MCP Server (Python)
-docker compose exec mcp-server bash
-
-# Database (PostgreSQL)
-docker compose exec database psql -U dev -d healthcare
-```
-
-### Reset database
-```bash
-# Stop all services
 docker compose down
-
-# Remove database volume
-docker volume rm docker_postgres_data
-
-# Start fresh
-docker compose up -d
 ```
 
-## Hot-Reloading
+**Docker Desktop GUI:**
+- Click the "◼ Stop" button in Docker Desktop
 
-All services are configured with volume mounts for hot-reloading:
+## What If I Need to Install a New Package?
 
-- **Frontend**: Changes to `chat-ui/` files will automatically refresh the browser
-- **Backend**: Changes to `llm-orchestrator/` and `mcp-server/` files require the Python process to restart (use `--build` if dependencies change)
+If you need to add a Python or Node package, **do NOT try to install it yourself inside the container**. Instead:
 
-## Troubleshooting
+### Option 1: Contact Adriean (Recommended)
+Message Adriean with:
+- Which service needs the package (mcp-server, llm-orchestrator, or chat-ui)
+- Package name and version (e.g., "requests version 2.31.0")
+- Adriean will update the requirements file and rebuild the container
 
-### Port already in use
+### Option 2: Use Claude Code
+If you're working with Claude Code:
+1. Tell Claude: "I need to add [package-name] to [service-name]"
+2. Claude will update the appropriate requirements file
+3. Rebuild the container:
+   ```bash
+   docker compose up -d --build [service-name]
+   ```
+
+**Why this process?** Your code changes sync automatically, but dependency changes (requirements.txt, package.json) require rebuilding the container image. This ensures everyone on the team has the same dependencies.
+
+## Container Information
+
+All services run in isolated containers that can talk to each other:
+
+| Service | What It Does | Port | Your Code Directory |
+|---------|-------------|------|---------------------|
+| **capstone-chat-ui** | React frontend | 3000 | `chat-ui/` |
+| **capstone-orchestrator** | Python API routing logic | 8080 | `llm-orchestrator/` |
+| **capstone-mcp-server** | Database query tools | 8000 | `mcp-server/` |
+| **capstone-database** | PostgreSQL database | 5432 | (data in Docker volume) |
+
+Access them at:
+- Frontend: http://localhost:3000
+- Orchestrator API: http://localhost:8080
+- MCP Server: http://localhost:8000
+- Database: `localhost:5432` (username: `dev`, password: `devpass`, database: `healthcare`)
+
+## Common Scenarios
+
+### "I changed my code but nothing happened"
+
+- **Frontend**: Refresh your browser (Ctrl/Cmd + R)
+- **Backend**: You may need to restart the container:
+  ```bash
+  docker compose restart mcp-server
+  ```
+  Or in Docker Desktop: Click "Restart" button
+
+### "I added a package to requirements.txt or package.json"
+
+Rebuild that container:
 ```bash
-# Check what's using the port
-lsof -i :3000
-
-# Kill the process or change the port in docker-compose.yml
+docker compose up -d --build [service-name]
 ```
 
-### Services not starting
+Examples:
 ```bash
-# Check logs for errors
-docker compose logs
-
-# Rebuild images
-docker compose up -d --build
-```
-
-### Database connection errors
-```bash
-# Verify database is running
-docker compose ps
-
-# Check database logs
-docker compose logs database
-
-# Test connection
-docker compose exec database psql -U dev -d healthcare -c "SELECT 1;"
-```
-
-### Frontend dependencies missing
-```bash
-# Rebuild with fresh node_modules
-docker compose down
-docker volume rm docker_chat_ui_node_modules
+docker compose up -d --build mcp-server
 docker compose up -d --build chat-ui
 ```
 
-## Network
+### "I want to see if my service is running"
 
-All services communicate via the `capstone` bridge network:
-- Services can reach each other by service name (e.g., `http://mcp-server:8000`)
-- Host machine can access services via localhost ports
+**Command Line:**
+```bash
+docker compose ps
+```
 
-## Volumes
+**Docker Desktop GUI:**
+- Open Docker Desktop
+- Check the "Containers" tab
+- Green = running, Grey = stopped
 
-- `postgres_data`: Persists PostgreSQL database data
-- `chat_ui_node_modules`: Isolates node_modules from host machine for better performance
+### "I want to run a command inside a container"
 
-## Development Workflow
+**Command Line:**
+```bash
+# Python containers (mcp-server, llm-orchestrator)
+docker compose exec mcp-server bash
 
-1. Make code changes in your editor (VS Code, etc.)
-2. Changes are automatically synced to containers via volume mounts
-3. For frontend: Browser auto-refreshes
-4. For backend: May need to restart service if not using auto-reload
-5. Commit changes to git when ready
+# Frontend container (Node)
+docker compose exec chat-ui sh
 
-## Notes
+# Database
+docker compose exec database psql -U dev -d healthcare
+```
 
-- **Do not commit `.env` file** - it contains secrets
-- Use `.env.example` as a template
-- Docker setup is managed by Adriean (Infra lead)
-- Report any Docker issues to Adriean
+**Docker Desktop GUI:**
+- Click on the container name
+- Go to "Exec" tab
+- Type your command
+
+### "Something is broken and I want to start fresh"
+
+**Full reset:**
+```bash
+# Stop and remove everything
+docker compose down
+
+# Remove database data (if you want to reset the database)
+docker volume rm docker_postgres_data
+
+# Start fresh
+docker compose up -d --build
+```
+
+### "The port is already in use"
+
+Another program is using the same port. Either:
+1. Stop the other program
+2. Or ask Adriean to change the port in docker-compose.yml
+
+## Understanding the Network
+
+All containers are connected to a private network called `capstone`:
+- Containers can talk to each other using service names (e.g., `http://mcp-server:8000`)
+- Your host machine (laptop) can access them via `localhost` and the port number
+- They're isolated from the rest of your computer
+
+## Important Notes
+
+- **Never commit the `.env` file** - It contains secrets. Git is already configured to ignore it.
+- **Don't edit files inside containers** - Edit files on your laptop; they automatically sync to containers
+- **node_modules stays in Docker** - The `chat-ui/node_modules` folder lives in a Docker volume, not on your laptop (this makes things faster)
+- **Database data persists** - Even if you stop containers, database data is saved in a Docker volume
+
+## Getting Help
+
+- **Docker issues**: Contact Adriean (Infra lead)
+- **Docker Desktop not responding**: Try restarting Docker Desktop
+- **Weird errors**: Try `docker compose down` then `docker compose up -d --build`
+
+## Quick Reference Card
+
+| I want to... | Command |
+|--------------|---------|
+| Start everything | `docker compose up -d` |
+| Stop everything | `docker compose down` |
+| See what's running | `docker compose ps` |
+| View logs | `docker compose logs -f` |
+| Restart one service | `docker compose restart mcp-server` |
+| Rebuild after dependency change | `docker compose up -d --build mcp-server` |
+| Start fresh | `docker compose down && docker compose up -d --build` |

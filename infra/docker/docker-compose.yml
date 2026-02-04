@@ -5,6 +5,8 @@ version: "3.9"
 
 services:
   mcp-server:
+    container_name: capstone-mcp-server
+    image: capstone-mcp-server
     build:
       context: ../../mcp-server
       dockerfile: Dockerfile
@@ -22,6 +24,8 @@ services:
       - database
 
   llm-orchestrator:
+    container_name: capstone-orchestrator
+    image: capstone-orchestrator
     build:
       context: ../../llm-orchestrator
       dockerfile: Dockerfile
@@ -39,6 +43,8 @@ services:
       - mcp-server
 
   chat-ui:
+    container_name: capstone-chat-ui
+    image: capstone-chat-ui
     build:
       context: ../../chat-ui
       dockerfile: Dockerfile
@@ -60,6 +66,7 @@ services:
       - llm-orchestrator
 
   database:
+    container_name: capstone-database
     image: postgres:15
     environment:
       POSTGRES_DB: healthcare
@@ -74,6 +81,7 @@ services:
 
 networks:
   capstone:
+    name: capstone
     driver: bridge
 
 volumes:
