@@ -176,6 +176,12 @@ The project follows a phased approach (see `docs/playbook_milestones.md` for det
 
 - **Temporary Files**: Never commit files to the repo that start with `temp_` in their file name. These are working files only and should remain local.
 
+## Code Organization Principles
+
+- **Avoid Megafiles**: Keep code files focused and reasonably sized. Break large files into smaller, logical modules.
+- **Modular Architecture**: Write clean, modular code with clear separation of concerns.
+- **Purpose**: Modular code is easier to build, test, troubleshoot, and maintain. Large monolithic files become difficult to navigate and debug.
+
 ## Project Epics
 
 The project is organized into 6 Jira epics that represent parallel workstreams:
