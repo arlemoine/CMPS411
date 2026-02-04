@@ -39,7 +39,7 @@ This directory contains the Docker setup for running all project services locall
 
 4. **Verify it's working**:
    - Chat UI: Open http://localhost:3000 in your browser
-   - You should see a message saying "Waiting for Paul to initialize React project"
+   - You should see "Healthcare AI Chat" with a purple header and chat interface
    - If you see this, everything is working!
 
 ## Daily Development Workflow
