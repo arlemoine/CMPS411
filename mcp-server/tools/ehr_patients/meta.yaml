@@ -1,0 +1,20 @@
+# Tool Metadata for LLM Orchestrator
+
+name: ehr_patients
+description: Search and retrieve patient demographics from EHR system
+version: 1.0.0
+
+# Required roles (RBAC)
+required_roles:
+  - physician
+  - nurse
+  - medical_assistant
+
+# Tool capabilities
+capabilities:
+  - search_patients
+  - get_patient_demographics
+
+# TODO: Add input schema (parameters the LLM can provide)
+# TODO: Add output schema (structure of returned data)
+# TODO: Add usage examples for LLM guidance

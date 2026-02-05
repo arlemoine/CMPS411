@@ -1,0 +1,21 @@
+# Tool Metadata for LLM Orchestrator
+
+name: icd10_lookup
+description: Look up ICD-10 diagnosis codes and descriptions
+version: 1.0.0
+
+# Required roles (all clinical staff can use this)
+required_roles:
+  - physician
+  - nurse
+  - medical_assistant
+  - billing
+
+# Tool capabilities
+capabilities:
+  - lookup_icd10_code
+  - search_diagnosis_codes
+
+# TODO: Add input schema (code or search term)
+# TODO: Add output schema (code details)
+# TODO: Add usage examples
