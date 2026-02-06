@@ -1,7 +1,8 @@
 # Development Dockerfile for LLM Orchestrator (Python)
 # Supports hot-reloading for local development
+# Uses full Python image with all build tools and dependencies
 
-FROM python:3.11-slim
+FROM python:3.11
 
 # Set working directory
 WORKDIR /app

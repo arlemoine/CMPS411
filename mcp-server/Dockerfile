@@ -1,5 +1,5 @@
-# Base image
-FROM python:3.11-slim
+# Base image with full build tools and dependencies
+FROM python:3.11
 
 # Set working directory inside the container
 WORKDIR /app
